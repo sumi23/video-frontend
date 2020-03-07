@@ -1,0 +1,43 @@
+
+<div class="container-fluid">  
+    <br />
+    <br /> 
+    <div id="new">  
+    <button  type="button"  class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span>create new</button>    
+    </div>
+    <br />
+    <br />
+    
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>SNo</th>
+          <th>Name</th>
+          <th>Display Name</th>
+          <th>Url</th>
+          <th>Duration</th>
+          <th>Category</th>
+          <th>Level</th>
+          <th>Status</th>
+          <th>&nbsp;&nbsp;Actions</th>
+        </tr>
+      </thead>
+    
+      <tbody *ngFor="let video of video;let i=index;">
+        <tr >
+          <td>{{i+1}}</td>
+          <!-- <td></td> -->
+          <td><a [routerLink]="['viewlist']" [queryParams]="{ id:video.id }">{{video.name}}</a></td>
+          <td>{{video.displayName}}</td>
+          <td>{{video.url}}</td>
+          <td>{{video.duration}}</td>
+          <td>{{video.category.name}}</td>
+          <td>{{video.level.name}}</td>
+          <td>{{video.status}}</td>
+          <td><button  type="button" class="btn btn-primary btn-sm">Edit</button></td>
+          <td><button  (click)="deleteVideo(video.id)" type="button" class="btn btn-danger btn-sm">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
