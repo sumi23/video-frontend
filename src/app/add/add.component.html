@@ -1,16 +1,175 @@
+<div class="container-fluid">
+  <br /><br />
+  <div class="row">
+    <div class=col-md-10>
+      <h3>Videos</h3>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-primary btn-sm" (click)="save()">Save</button>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-primary btn-sm">Back</button>
+    </div>
+  </div>
+  <hr />
+  <form [formGroup]="videoForm">
+    <div class="form-group row">
+      <label class=" col-md-2 control-label">Video Name:</label>
+      <div class="col-md-10">
+        <input type="text" class="col-sm-6" autocomplete="off" maxlength="100" formControlName="name">
+      </div>
+      <label class="col-md-2 control-label">Display Name:</label>
+      <div class="col-md-10">
+        <input type="text" class="col-sm-6" formControlName="displayName">
+      </div>
+      <label class=" col-md-2 control-label">Video Url: </label>
+      <div class="col-md-10">
+        <input type="text" class="col-sm-6" formControlName="url">
+      </div>
+      <label class=" col-md-2 control-label">Duration: </label>
+      <div class="col-md-10">
+        <input type="text" class="col-sm-6" formControlName="duration">
+      </div>
+      <label class=" col-md-2 control-label">Status: </label>
+      <div class="col-md-10">
+        <input type="text" class="col-sm-6" formControlName="status">
+      </div>
+      <label class=" col-md-2 control-label">Tags: </label>
+      <div class="col-md-10">
+        <input type="text" formControlName="tags">
+      </div>
+      <label class=" col-md-2 control-label">description </label>
+      <div class="col-md-10">
+        <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+      </div>
+      <label for="levels" class=" col-md-2 control-label">Level:</label>
+      <div class="col-md-10">
+        <select id="levels" formControlName="levels">
+          <option value="" disabled selected>select</option>
+          <option *ngFor="let level of levels" [value]="level.name">{{level.name}}</option>
+        </select>
+      </div>
+      <label class=" col-md-2 control-label">Category:</label>
+      <div class="col-md-10">
+        <select id="categories" formControlName="categories">
+          <option value="" disabled selected>select</option>
+          <option *ngFor="let category of categories" [value]="category.name">{{category.name}}</option>
+        </select>
+      </div>
+      <label class=" col-md-2 control-label">Transcript: </label>
+      <div class="col-md-10">
+        <input type="text" class="col-sm-6" formControlName="file">
+      </div> <!--end of video form-->
 
-<form [formGroup] ="videoform">
-    <label>Video Name:
-        <input type="text" formControlName="name">
-    </label>
-    <label>Display Name:
-        <input type="text" formControlName="displayName">
-    </label>
-    <label>Video Url:
-        <input type="text" formControlName="url">
-    </label>
-    <label>Transcript:
-        <input type="file" formControlName="file">
-    </label>
-    <button (click)="save()" class="btn btn-primary">Save</button>
-</form>
+      <br /><br /><br /><br />
+      <div class="col-md-10">
+        <fieldset>
+          <div class="row">
+            <div class="col-md-10">
+              <legend>Reference Artifact(s)</legend>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary" (click)="addRef()">Add</button>
+            </div>
+          </div>
+          <hr />
+          <div formArrayName="referenceArtifacts">
+            <div *ngFor="let referenceArtifact of videoForm.get('referenceArtifacts')['controls'];
+       let refindex=index" [formGroupName]="refindex">
+              <div class="form-group row">
+                <label class=" col-md-2 control-label">Name:</label>
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" formControlName="ref_name" />
+                </div>
+                <label class=" col-md-2 control-label">Artifact:</label>
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" formControlName="artifact" />
+                </div>
+                <label class=" col-md-2 control-label">Description:</label>
+                <div class="col-md-10">
+                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+                </div>
+                <br /><br /><br />
+                <button class="btn btn-danger btn-sm" (click)="deleteRef(refindex)">Remove </button>   
+              </div>
+              <br /> <br />
+            </div>
+          </div>
+        </fieldset>
+      </div><!--end of ref art-->
+ 
+      <br /><br /><br /><br />
+      <div class="col-md-10">
+        <fieldset>
+          <div class="row">
+            <div class="col-md-10">
+              <legend>Sample Program(s)</legend>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary" (click)="addSam()">Add</button>
+            </div>
+          </div>
+          <hr />
+          <div formArrayName="samplePrograms">
+            <div *ngFor="let sampleProgram of videoForm.get('samplePrograms')['controls'];
+       let samindex=index" [formGroupName]="samindex">
+              <div class="form-group row">
+                <label class=" col-md-2 control-label">Name:</label>
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" formControlName="sam_name" />
+                </div>
+                <label class=" col-md-2 control-label">Artifact:</label>
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" formControlName="sam_artifact" />
+                </div>
+                <label class=" col-md-2 control-label">Description:</label>
+                <div class="col-md-10">
+                  <textarea rows=3 cols=20 maxlength="250" formControlName="sam_description"></textarea>
+                </div>
+                <button class="btn btn-danger btn-sm" (click)="deleteSam(samindex)">Remove </button>          
+              </div>
+              <br /> <br />
+            </div>
+          </div>
+        </fieldset>
+      </div> <!--end of samp prog-->
+
+      <br /><br /><br /><br />
+      <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-10">
+              <legend>Reference Url(s)</legend>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary" (click)="addRefUrl()">Add</button>
+            </div>
+          </div>
+          <hr />
+          <div formArrayName="referenceUrls">
+            <div *ngFor="let referenceUrl of videoForm.get('referenceUrls')['controls'];
+       let refUrlindex=index" [formGroupName]="refUrlindex">
+              <div class="form-group row">
+                <label class=" col-md-2 control-label">Name:</label>
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" formControlName="refUrl_name" />
+                </div>
+                <label class=" col-md-2 control-label">Url:</label>
+                <div class="col-md-10">
+                  <input type="text" class="col-sm-6" formControlName="refUrl" />
+                </div>
+                <label class=" col-md-2 control-label">Description:</label>
+                <div class="col-md-10">
+                  <textarea rows=3 cols=20 maxlength="250" formControlName="refUrl_description"></textarea>
+                </div>
+                <br /><br /><br />
+                <button class="btn btn-danger btn-sm" (click)="deleteRefUrl(refUrlindex)">Remove </button>   
+              </div>
+              <br /> <br />
+            </div>
+          </div>
+      </div><!--end of ref art-->
+
+    </div>
+  </form>
+  {{videoForm.value|json}}
+</div>

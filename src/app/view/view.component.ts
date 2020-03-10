@@ -23,7 +23,14 @@ id:Number=0;
     );
    
   }
-
+  toggleStatus(id:number){
+    this.obj.toggleStatus(id).subscribe(result=>{
+       console.log("hi");
+      this.listVideo();
+      console.log(result);
+    }
+    );
+  }
   deleteVideo(id: number) {
     this.obj.deleteVideo(id).subscribe(
         data => {

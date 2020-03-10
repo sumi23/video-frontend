@@ -11,6 +11,8 @@ import { ViewlistComponent } from './viewlist/viewlist.component';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { AddComponent } from './add/add.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReferenceurlComponent } from './referenceurl/referenceurl.component';
+//import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DeleteComponent,
     ViewlistComponent,
     SafeUrlPipe,
-    AddComponent
+    AddComponent,
+    ReferenceurlComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule
+    //,RxReactiveFormsModule 
     
   ],
   providers: [HttpClient,HttpClientModule,CrudService],

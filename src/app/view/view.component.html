@@ -33,9 +33,11 @@
           <td>{{video.duration}}</td>
           <td>{{video.category.name}}</td>
           <td>{{video.level.name}}</td>
-          <td>{{video.status}}</td>
-          <td><button  type="button" class="btn btn-primary btn-sm">Edit</button></td>
-          <td><button  (click)="deleteVideo(video.id)" type="button" class="btn btn-danger btn-sm">Delete</button></td>
+          <td><ng-container *ngIf="video.status; else inactive"><button type="button" (click)="toggleStatus(video.id)" class="btn btn-success btn-sm">Active</button></ng-container>
+          <ng-template #inactive><button type="button" (click)="toggleStatus(video.id)" class="btn btn-warning btn-sm">Inactive</button></ng-template>
+          </td>
+          <td>&nbsp;&nbsp;<i class="fa fa-pencil-square-o btn btn-primary btn-sm" aria-hidden="true"></i>&nbsp;&nbsp;
+          <i class="fa fa-trash btn btn-danger btn-sm" (click)="deleteVideo(video.id)" aria-hidden="true"></i></td>
         </tr>
       </tbody>
     </table>
