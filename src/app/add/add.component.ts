@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray, AbstractControl, } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import { Video } from '../video';
+import { Level } from '../level';
 //import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 @Component({
   selector: 'app-add',
@@ -14,6 +15,7 @@ export class AddComponent implements OnInit {
   categories:Array<any>;
   videoForm: FormGroup;
   video:Video;
+  level:Level;
   constructor(private crudservice: CrudService, private formbuilder: FormBuilder) {
 
   }
@@ -34,26 +36,26 @@ export class AddComponent implements OnInit {
       description:[],
       levels:[],
       categories:[],
-      file: [''],
-      referenceArtifacts: this.formbuilder.array([this.formbuilder.group(
+      transcript: [''],
+      referenceArtifact: this.formbuilder.array([this.formbuilder.group(
         {
-          ref_name: '',
-          artifact: '',
-          description: ''
+          name: [''],
+          file: [''],
+          description: ['']
         }
       )]),
-      samplePrograms: this.formbuilder.array([this.formbuilder.group(
+      sampleProgram: this.formbuilder.array([this.formbuilder.group(
         {
-          sam_name: '',
-          sam_artifact: '',
-          sam_description: ''
+          name: [''],
+          file:[''],
+          description: ['']
         }
       )]),
-      referenceUrls: this.formbuilder.array([this.formbuilder.group(
+      referenceUrl: this.formbuilder.array([this.formbuilder.group(
         {
-          refUrl_name: '',
-          refUrl: '',
-          refUrl_description: ''
+          name:'',
+          url: [''],
+          description:['']
         }
       )])
 
@@ -61,46 +63,46 @@ export class AddComponent implements OnInit {
     });
   }
   
-  get referenceArtifacts() {
-    return this.videoForm.get('referenceArtifacts') as FormArray;
+  get referenceArtifact() {
+    return this.videoForm.get('referenceArtifact') as FormArray;
   }
   addRef() {
-    this.referenceArtifacts.push(this.formbuilder.group({
-      ref_name: '',
-      artifact: '',
+    this.referenceArtifact.push(this.formbuilder.group({
+      name: '',
+      file: '',
       description: ''
     }));
   }
   deleteRef(index: number) {
-    this.referenceArtifacts.removeAt(index);
+    this.referenceArtifact.removeAt(index);
   }
 
-  get samplePrograms() {
-    return this.videoForm.get('samplePrograms') as FormArray;
+  get sampleProgram() {
+    return this.videoForm.get('sampleProgram') as FormArray;
   }
   addSam() {
-    this.samplePrograms.push(this.formbuilder.group({
-      sam_name: '',
-      sam_artifact: '',
-      sam_description: ''
+    this.sampleProgram.push(this.formbuilder.group({
+      name: '',
+      file: '',
+      description: ''
     }));
   }
   deleteSam(index: number) {
-    this.samplePrograms.removeAt(index);
+    this.sampleProgram.removeAt(index);
   }
 
-  get referenceUrls() {
-    return this.videoForm.get('referenceUrls') as FormArray;
+  get referenceUrl() {
+    return this.videoForm.get('referenceUrl') as FormArray;
   }
   addRefUrl() {
-    this.referenceUrls.push(this.formbuilder.group({
-      refUrl_name: '',
-      refUrl: '',
-      refUrl_description: ''
+    this.referenceUrl.push(this.formbuilder.group({
+      name: '',
+      url: '',
+      description: ''
     }));
   }
   deleteRefUrl(index: number) {
-    this.referenceUrls.removeAt(index);
+    this.referenceUrl.removeAt(index);
   }
 
 
@@ -130,8 +132,11 @@ export class AddComponent implements OnInit {
     });
 
   }
-  // addVideo(){
-  //   this.video=this.videoForm.value;
-  // }
+
+  levelId(id:number){
+    this.level.id=id;
+    this.videoForm.patchValue({levels:this.level});
+  }
 
 }
+

@@ -1,5 +1,5 @@
 export class ReferenceArtifact {
     name:string;
-    artifact:string;
+    file:string;
     description:string;
 }

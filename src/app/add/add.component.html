@@ -44,9 +44,9 @@
       </div>
       <label for="levels" class=" col-md-2 control-label">Level:</label>
       <div class="col-md-10">
-        <select id="levels" formControlName="levels">
+        <select (change)=levelId($event.target.value)  id="levels" formControlName="levels">
           <option value="" disabled selected>select</option>
-          <option *ngFor="let level of levels" [value]="level.name">{{level.name}}</option>
+          <option *ngFor="let level of levels" [value]="level.id">{{level.name}}</option>
         </select>
       </div>
       <label class=" col-md-2 control-label">Category:</label>
@@ -58,7 +58,7 @@
       </div>
       <label class=" col-md-2 control-label">Transcript: </label>
       <div class="col-md-10">
-        <input type="text" class="col-sm-6" formControlName="file">
+        <input type="text" class="col-sm-6" formControlName="transcript">
       </div> <!--end of video form-->
 
       <br /><br /><br /><br />
@@ -73,17 +73,17 @@
             </div>
           </div>
           <hr />
-          <div formArrayName="referenceArtifacts">
-            <div *ngFor="let referenceArtifact of videoForm.get('referenceArtifacts')['controls'];
+          <div formArrayName="referenceArtifact">
+            <div *ngFor="let referenceArtifact of videoForm.get('referenceArtifact')['controls'];
        let refindex=index" [formGroupName]="refindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="ref_name" />
+                  <input type="text" class="col-sm-6" formControlName="name" />
                 </div>
                 <label class=" col-md-2 control-label">Artifact:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="artifact" />
+                  <input type="text" class="col-sm-6" formControlName="file" />
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
@@ -110,21 +110,21 @@
             </div>
           </div>
           <hr />
-          <div formArrayName="samplePrograms">
-            <div *ngFor="let sampleProgram of videoForm.get('samplePrograms')['controls'];
+          <div formArrayName="sampleProgram">
+            <div *ngFor="let sampleProgram of videoForm.get('sampleProgram')['controls'];
        let samindex=index" [formGroupName]="samindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="sam_name" />
+                  <input type="text" class="col-sm-6" formControlName="name" />
                 </div>
                 <label class=" col-md-2 control-label">Artifact:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="sam_artifact" />
+                  <input type="text" class="col-sm-6" formControlName="file" />
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
-                  <textarea rows=3 cols=20 maxlength="250" formControlName="sam_description"></textarea>
+                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                 </div>
                 <button class="btn btn-danger btn-sm" (click)="deleteSam(samindex)">Remove </button>          
               </div>
@@ -145,21 +145,21 @@
             </div>
           </div>
           <hr />
-          <div formArrayName="referenceUrls">
-            <div *ngFor="let referenceUrl of videoForm.get('referenceUrls')['controls'];
+          <div formArrayName="referenceUrl">
+            <div *ngFor="let referenceUrl of videoForm.get('referenceUrl')['controls'];
        let refUrlindex=index" [formGroupName]="refUrlindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="refUrl_name" />
+                  <input type="text" class="col-sm-6" formControlName="name" />
                 </div>
                 <label class=" col-md-2 control-label">Url:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="refUrl" />
+                  <input type="text" class="col-sm-6" formControlName="url" />
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
-                  <textarea rows=3 cols=20 maxlength="250" formControlName="refUrl_description"></textarea>
+                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                 </div>
                 <br /><br /><br />
                 <button class="btn btn-danger btn-sm" (click)="deleteRefUrl(refUrlindex)">Remove </button>   
