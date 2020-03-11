@@ -34,8 +34,8 @@ export class AddComponent implements OnInit {
       status:[''],
       tags:[],
       description:[],
-      levels:[],
-      categories:[],
+     // levels:[],
+     // categories:[],
       transcript: [''],
       referenceArtifact: this.formbuilder.array([this.formbuilder.group(
         {
