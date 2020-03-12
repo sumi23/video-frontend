@@ -14,8 +14,9 @@ export class AddComponent implements OnInit {
   levels:Array<any>;
   categories:Array<any>;
   videoForm: FormGroup;
+  level:FormGroup;
   video:Video;
-  level:Level;
+  levels_:Level;
   constructor(private crudservice: CrudService, private formbuilder: FormBuilder) {
 
   }
@@ -31,11 +32,14 @@ export class AddComponent implements OnInit {
       displayName: [''],
       url: [''],
       duration:[''],
-      status:[''],
       tags:[],
       description:[],
-     // levels:[],
-     // categories:[],
+      level:this.formbuilder.group({
+       id:[]
+     }),
+      category:this.formbuilder.group({
+        id:[]
+      }),
       transcript: [''],
       referenceArtifact: this.formbuilder.array([this.formbuilder.group(
         {
@@ -133,9 +137,12 @@ export class AddComponent implements OnInit {
 
   }
 
-  levelId(id:number){
-    this.level.id=id;
-    this.videoForm.patchValue({levels:this.level});
+  setLevelId(levelId:number){
+    this.videoForm.patchValue({level:{id:levelId}});
+  }
+
+  setCategoryId(categoryId:number){
+    this.videoForm.patchValue({category:{id:categoryId}});
   }
 
 }
