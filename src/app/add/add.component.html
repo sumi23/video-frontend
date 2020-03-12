@@ -69,13 +69,13 @@
               <legend>Reference Artifact(s)</legend>
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary" (click)="addRef()">Add</button>
+              <button class="btn btn-primary" (click)="addRefArt()">Add</button>
             </div>
           </div>
           <hr />
           <div formArrayName="referenceArtifact">
             <div *ngFor="let referenceArtifact of videoForm.get('referenceArtifact')['controls'];
-       let refindex=index" [formGroupName]="refindex">
+       let refArtindex=index" [formGroupName]="refArtindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
@@ -90,7 +90,7 @@
                   <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                 </div>
                 <br /><br /><br />
-                <button class="btn btn-danger btn-sm" (click)="deleteRef(refindex)">Remove </button>   
+                <button class="btn btn-danger btn-sm" (click)="deleteRefArt(refArtindex)">Remove </button>   
               </div>
               <br /> <br />
             </div>
@@ -106,13 +106,13 @@
               <legend>Sample Program(s)</legend>
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary" (click)="addSam()">Add</button>
+              <button class="btn btn-primary" (click)="addSamProg()">Add</button>
             </div>
           </div>
           <hr />
           <div formArrayName="sampleProgram">
             <div *ngFor="let sampleProgram of videoForm.get('sampleProgram')['controls'];
-       let samindex=index" [formGroupName]="samindex">
+       let samProgindex=index" [formGroupName]="samProgindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
@@ -126,7 +126,7 @@
                 <div class="col-md-10">
                   <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                 </div>
-                <button class="btn btn-danger btn-sm" (click)="deleteSam(samindex)">Remove </button>          
+                <button class="btn btn-danger btn-sm" (click)="deleteSamProg(samProgindex)">Remove </button>          
               </div>
               <br /> <br />
             </div>
