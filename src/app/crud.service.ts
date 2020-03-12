@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient,HttpClientModule} from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Video } from './video';
+import { Video } from './model/video';
 @Injectable({
   providedIn: 'root'
 })

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray, AbstractControl, } from '@angular/forms';
 import { CrudService } from '../crud.service';
-import { Video } from '../video';
-import { Level } from '../level';
+import { Video } from '../model/video';
+import { Level } from '../model/level';
 //import { RxFormBuilder } from '@rxweb/reactive-form-validators';
 @Component({
   selector: 'app-add',
