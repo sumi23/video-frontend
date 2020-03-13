@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, Validators, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import { Video } from '../model/video';
 import { Level } from '../model/level';
 import { Category } from '../model/category';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -16,7 +17,7 @@ export class AddComponent implements OnInit {
   videoForm: FormGroup;
   level: FormGroup;
   video: Video;
-  constructor(private crudservice: CrudService, private formbuilder: FormBuilder) {
+  constructor(private crudservice: CrudService,private router:Router, private formbuilder: FormBuilder) {
 
   }
 
@@ -31,7 +32,7 @@ export class AddComponent implements OnInit {
       displayName: [''],
       url: [''],
       duration: [''],
-      tags: [''],
+      tags: ['',[Validators.required, requiredFileType('png')]],
       description: [''],
       level: this.formbuilder.group({
         id: ['']
@@ -61,8 +62,6 @@ export class AddComponent implements OnInit {
           description: ['']
         }
       )])
-
-
     });
   }
 
@@ -123,8 +122,17 @@ export class AddComponent implements OnInit {
     });
   }
 
-  save() {
+  setLevelId(levelId: number) {
+    this.videoForm.patchValue({ level: { id: levelId } });
+  }
 
+  setCategoryId(categoryId: number) {
+    this.videoForm.patchValue({ category: { id: categoryId } });
+  }
+
+  save() {
+     
+    //this.videoForm.patchValue(this.referenceArtifact[{file:}])
     this.video = this.videoForm.value;
     console.log(this.video);
     this.crudservice.addVideo(this.video).subscribe((result: any) => {
@@ -133,13 +141,72 @@ export class AddComponent implements OnInit {
     });
 
   }
+  back()
+    {
+       this.router.navigate(['view']);
+    }  
+    
+    @ViewChild('file1') file1: any;
+    selectedFiles: FileList;
+    fileName: string;
+   showName(event):string
+   {
+    this.selectedFiles = event.target.files;
+    this.fileName = this.selectedFiles[0].name;
+    console.log('selectedFiles: ' + this.fileName )
+    this.file1=this.fileName;
+    return this.fileName;
+   
+   }
 
-  setLevelId(levelId: number) {
-    this.videoForm.patchValue({ level: { id: levelId } });
+  //  uploadFile(files)
+  //  {
+  //     let file:File=files[0];
+  //     const formData = new FormData();  
+  //   formData.append('file', files.data);  
+  //   this.crudservice.uploadFile(formData).subscribe((result:any)=>
+  //   {
+  //     console.log(result);
+  //   }
+  //   );
+  //  }
+    
+  
+  file:File;
+  selectedFile=null;
+  uploadFile(event)
+  {
+     this.selectedFile=event.target.files[0];
+     this.fileName = this.selectedFile.name;
+     console.log('selectedFilesname: ' + this.fileName )
+     this.file1=this.fileName;
+     console.log(this.selectedFile);
+     const payload = new FormData();  
+     payload.append('file', this.selectedFile);  
+    this.crudservice.uploadFile(payload).subscribe((result:any)=>
+   {
+     console.log(result);
+   }
+   );
   }
 
-  setCategoryId(categoryId: number) {
-    this.videoForm.patchValue({ category: { id: categoryId } });
+
+   requiredFileType( type: string ) {
+    return function (control: FormControl) {
+      const file = control.value;
+      if ( file ) {
+        const extension = file.name.split('.')[1].toLowerCase();
+        if ( type.toLowerCase() !== extension.toLowerCase() ) {
+          return {
+            requiredFileType: true
+          };
+        }
+        
+        return null;
+      }
+  
+      return null;
+    };
   }
 
 }

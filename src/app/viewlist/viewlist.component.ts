@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpBackend } from '@angular/common/http';
+import { HttpBackend, HttpResponse } from '@angular/common/http';
 import { CrudService } from '../crud.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-viewlist',
@@ -12,7 +13,9 @@ export class ViewlistComponent implements OnInit {
   videos:Array<any>=[];
   id:number=0;
   vid:any;
-  constructor(private route:ActivatedRoute,private router:Router,private obj:CrudService) { }
+  url:any;
+  file:string;
+  constructor(private route:ActivatedRoute,private router:Router,private obj:CrudService,private sanitizer:DomSanitizer) { }
 
   ngOnInit(): void {
     this.vid = this.route
@@ -22,6 +25,7 @@ export class ViewlistComponent implements OnInit {
       console.log(this.id);
     });
     this.listVideoById();
+    this.downloadFile(this.file);
   }
 
   listVideoById(){
@@ -31,6 +35,19 @@ export class ViewlistComponent implements OnInit {
       console.log(this.videos);
     }
     );
+  }
+
+  downloadFile(file) {
+    this.obj.fileDw(file).subscribe(
+        (data) => {
+         console.log(data);
+      const filedata=data.body;
+     console.log(filedata);
+        var blob = new Blob([filedata], { type: 'application/octet-stream' })
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+       
+      },
+        error => console.log(error));
   }
 
     back()

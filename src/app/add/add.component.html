@@ -1,3 +1,9 @@
+<script>function showName () {
+  var name = document.getElementById('fileInput'); 
+  alert('Selected file: ' + name.files.name);
+  return name.files.name;
+}
+</script>
 <div class="container-fluid">
   <br /><br />
   <div class="row">
@@ -8,7 +14,7 @@
       <button class="btn btn-primary btn-sm" (click)="save()">Save</button>
     </div>
     <div class="col-md-1">
-      <button class="btn btn-primary btn-sm">Back</button>
+      <button class="btn btn-primary btn-sm" (click)="back()">Back</button>
     </div>
   </div>
   <hr />
@@ -41,25 +47,26 @@
       <label for="levels" class=" col-md-2 control-label">Level:</label>
       <div class="col-md-10">
         <div formGroupName="level">
-        <select (change)=setLevelId($event.target.value)  id="levels" formControlName="id">
-          <option value="" disabled selected>select</option>
-          <option *ngFor="let level of levels" [value]="level.id">{{level.name}}</option>
-        </select>
-       </div>
+          <select (change)=setLevelId($event.target.value) id="levels" formControlName="id">
+            <option value="" disabled selected>select</option>
+            <option *ngFor="let level of levels" [value]="level.id">{{level.name}}</option>
+          </select>
+        </div>
       </div>
       <label class=" col-md-2 control-label">Category:</label>
       <div class="col-md-10">
         <div formGroupName="category">
-        <select (change)=setCategoryId($event.target.value) id="categories" formControlName="id">
-          <option value="" disabled selected>select</option>
-          <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
-        </select>
+          <select (change)=setCategoryId($event.target.value) id="categories" formControlName="id">
+            <option value="" disabled selected>select</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+          </select>
         </div>
       </div>
       <label class=" col-md-2 control-label">Transcript: </label>
       <div class="col-md-10">
-        <input type="text" class="col-sm-6" formControlName="transcript">
-      </div> <!--end of video form-->
+        <input type="file"  (change)=uploadFile($event) class="col-sm-6" formControlName="transcript">
+      </div>
+      <!--end of video form-->
 
       <br /><br /><br /><br />
       <div class="col-md-10">
@@ -83,21 +90,22 @@
                 </div>
                 <label class=" col-md-2 control-label">Artifact:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="file" />
+                  <input type="file" id="fileInput"  [value]="file1" (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
                   <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                 </div>
                 <br /><br /><br />
-                <button class="btn btn-danger btn-sm" (click)="deleteRefArt(refArtindex)">Remove </button>   
+                <button class="btn btn-danger btn-sm" (click)="deleteRefArt(refArtindex)">Remove </button>
               </div>
               <br /> <br />
             </div>
           </div>
         </fieldset>
-      </div><!--end of ref art-->
- 
+      </div>
+      <!--end of ref art-->
+
       <br /><br /><br /><br />
       <div class="col-md-10">
         <fieldset>
@@ -120,54 +128,56 @@
                 </div>
                 <label class=" col-md-2 control-label">Artifact:</label>
                 <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="file" />
+                  <input type="file" value=showName() (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
                 </div>
                 <label class=" col-md-2 control-label">Description:</label>
                 <div class="col-md-10">
                   <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                 </div>
-                <button class="btn btn-danger btn-sm" (click)="deleteSamProg(samProgindex)">Remove </button>          
+                <button class="btn btn-danger btn-sm" (click)="deleteSamProg(samProgindex)">Remove </button>
               </div>
               <br /> <br />
             </div>
           </div>
         </fieldset>
-      </div> <!--end of samp prog-->
+      </div>
+      <!--end of samp prog-->
 
       <br /><br /><br /><br />
       <div class="col-md-10">
-          <div class="row">
-            <div class="col-md-10">
-              <legend>Reference Url(s)</legend>
-            </div>
-            <div class="col-md-2">
-              <button class="btn btn-primary" (click)="addRefUrl()">Add</button>
-            </div>
+        <div class="row">
+          <div class="col-md-10">
+            <legend>Reference Url(s)</legend>
           </div>
-          <hr />
-          <div formArrayName="referenceUrl">
-            <div *ngFor="let referenceUrl of videoForm.get('referenceUrl')['controls'];
+          <div class="col-md-2">
+            <button class="btn btn-primary" (click)="addRefUrl()">Add</button>
+          </div>
+        </div>
+        <hr />
+        <div formArrayName="referenceUrl">
+          <div *ngFor="let referenceUrl of videoForm.get('referenceUrl')['controls'];
        let refUrlindex=index" [formGroupName]="refUrlindex">
-              <div class="form-group row">
-                <label class=" col-md-2 control-label">Name:</label>
-                <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="name" />
-                </div>
-                <label class=" col-md-2 control-label">Url:</label>
-                <div class="col-md-10">
-                  <input type="text" class="col-sm-6" formControlName="url" />
-                </div>
-                <label class=" col-md-2 control-label">Description:</label>
-                <div class="col-md-10">
-                  <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
-                </div>
-                <br /><br /><br />
-                <button class="btn btn-danger btn-sm" (click)="deleteRefUrl(refUrlindex)">Remove </button>   
+            <div class="form-group row">
+              <label class=" col-md-2 control-label">Name:</label>
+              <div class="col-md-10">
+                <input type="text" class="col-sm-6" formControlName="name" />
               </div>
-              <br /> <br />
+              <label class=" col-md-2 control-label">Url:</label>
+              <div class="col-md-10">
+                <input type="text" class="col-sm-6" formControlName="url" />
+              </div>
+              <label class=" col-md-2 control-label">Description:</label>
+              <div class="col-md-10">
+                <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
+              </div>
+              <br /><br /><br />
+              <button class="btn btn-danger btn-sm" (click)="deleteRefUrl(refUrlindex)">Remove </button>
             </div>
+            <br /> <br />
           </div>
-      </div><!--end of ref art-->
+        </div>
+      </div>
+      <!--end of ref art-->
 
     </div>
   </form>

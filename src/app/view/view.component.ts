@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CrudService } from '../crud.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view',
@@ -9,7 +10,8 @@ import { CrudService } from '../crud.service';
 export class ViewComponent implements OnInit {
 video:Array<any>=[];
 id:Number=0;
-  constructor(private obj:CrudService) { }
+file:string;
+  constructor(private obj:CrudService,private router:Router) { }
 
   ngOnInit(): void {
     this.listVideo();
@@ -40,4 +42,8 @@ id:Number=0;
         error => console.log(error));
   }
 
+  navigateAdd()
+  {
+    this.router.navigate(['add']);
+  }
 }
