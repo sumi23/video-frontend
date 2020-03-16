@@ -73,7 +73,7 @@
                                         <tbody *ngFor="let ref of video.referenceArtifact">
                                             <tr>
                                                 <td data-toggle="tooltip" title="{{ref.description}}">{{ref.name}}</td>
-                                                <td><a [href]="url" download={{ref.file}} (click)=downloadFile(ref.file)>{{ref.file}}</a></td>
+                                                <td><a href="javascript:void(0)" (click)=downloadFile(ref.file)>{{ref.file}}</a></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -100,7 +100,7 @@
                                         <tbody *ngFor="let ref of video.sampleProgram">
                                             <tr>
                                                 <td>{{ref.name}}</td>
-                                                <td><a [href]="url" download={{ref.file}} (click)=downloadFile(ref.file)>{{ref.file}}</a></td>
+                                                <td><a href="javascript:void(0)" (click)=downloadFile(ref.file)>{{ref.file}}</a></td>
                                             </tr>
                                         </tbody>
                                     </table>

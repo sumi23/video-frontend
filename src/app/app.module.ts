@@ -10,6 +10,7 @@ import { ViewlistComponent } from './viewlist/viewlist.component';
 import { SafeUrlPipe } from './safe-url.pipe';
 import { AddComponent } from './add/add.component';
 import {  ReactiveFormsModule } from '@angular/forms';
+import { EditComponent } from './edit/edit.component';
 //import {  RxReactiveFormsModule } from "@rxweb/reactive-form-validators"
 
 @NgModule({
@@ -19,6 +20,7 @@ import {  ReactiveFormsModule } from '@angular/forms';
     ViewlistComponent,
     SafeUrlPipe,
     AddComponent,
+    EditComponent,
   ],
   imports: [
     BrowserModule,

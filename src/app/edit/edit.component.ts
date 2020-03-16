@@ -1,34 +1,46 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, FormArray, FormControl } from '@angular/forms';
-import { CrudService } from '../crud.service';
-import { Video } from '../model/video';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Level } from '../model/level';
 import { Category } from '../model/category';
-import { Router } from '@angular/router';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { Video } from '../model/video';
+import { CrudService } from '../crud.service';
+
 @Component({
-  selector: 'app-add',
-  templateUrl: './add.component.html',
-  styleUrls: ['./add.component.css']
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.css']
 })
-export class AddComponent implements OnInit {
+export class EditComponent implements OnInit {
 
   levels: Array<Level>;
   categories: Array<Category>;
   videoForm: FormGroup;
   level: FormGroup;
   video: Video;
-  constructor(private crudservice: CrudService,private router:Router, private formbuilder: FormBuilder) {
-
-  }
+  level1:Level;
+  category1:Category;
+  vid:any;
+  id:number;
+  constructor(private route:ActivatedRoute,private crudservice: CrudService, private formbuilder: FormBuilder,private router:Router) { }
 
   ngOnInit(): void {
+
+    this.vid = this.route
+    .queryParams
+    .subscribe(params => {
+      this.id = params['id'];
+      console.log(this.id);
+    });
     this.form();
     this.viewLevels();
     this.viewCategories();
+    this.listVideoById();
   }
+
   form() {
     this.videoForm = this.formbuilder.group({
-      name: [''],
+      name: ['this.video.name'],
       displayName: [''],
       url: [''],
       duration: [''],
@@ -57,13 +69,27 @@ export class AddComponent implements OnInit {
       )]),
       referenceUrl: this.formbuilder.array([this.formbuilder.group(
         {
-          name: '',
+          name:[''],
           url: [''],
           description: ['']
         }
       )])
     });
   }
+
+ listVideoById(){
+  this.crudservice.listVideoById(this.id).subscribe( (result:any)=>
+  {
+    this.video=result;
+    console.log(this.video);
+    this.videoForm.patchValue({
+      name : this.video.name,
+     // level: { id: this.video.level},
+      duration:this.video.duration
+    }
+    );
+  });
+}
 
   get referenceArtifact() {
     return this.videoForm.get('referenceArtifact') as FormArray;
@@ -142,44 +168,18 @@ export class AddComponent implements OnInit {
 
   }
   back()
-    {
-       this.router.navigate(['view']);
-    }  
-    
-    @ViewChild('file1') file1: any;
-    selectedFiles: FileList;
-    fileName: string;
-   showName(event):string
-   {
-    this.selectedFiles = event.target.files;
-    this.fileName = this.selectedFiles[0].name;
-    console.log('selectedFiles: ' + this.fileName )
-    this.file1=this.fileName;
-    return this.fileName;
-   
-   }
-
-  //  uploadFile(files)
-  //  {
-  //     let file:File=files[0];
-  //     const formData = new FormData();  
-  //   formData.append('file', files.data);  
-  //   this.crudservice.uploadFile(formData).subscribe((result:any)=>
-  //   {
-  //     console.log(result);
-  //   }
-  //   );
-  //  }
-    
-  
-  file:File;
+  {
+     this.router.navigate(['view']);
+  }  
+  fileName:string;
+  file:string;
   selectedFile=null;
   uploadFile(event)
   {
      this.selectedFile=event.target.files[0];
      this.fileName = this.selectedFile.name;
      console.log('selectedFilesname: ' + this.fileName )
-     this.file1=this.fileName;
+     this.file=this.fileName;
      console.log(this.selectedFile);
      const payload = new FormData();  
      payload.append('file', this.selectedFile);  
@@ -191,4 +191,3 @@ export class AddComponent implements OnInit {
   }
 
 }
-
