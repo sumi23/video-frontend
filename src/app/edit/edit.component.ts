@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Level } from '../model/level';
 import { Category } from '../model/category';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { Video } from '../model/video';
 import { CrudService } from '../crud.service';
 
@@ -40,11 +40,12 @@ export class EditComponent implements OnInit {
 
   form() {
     this.videoForm = this.formbuilder.group({
-      name: ['this.video.name'],
+      name: [''],
       displayName: [''],
       url: [''],
-      duration: [''],
+      duration: [{value:'',disabled: true}],
       tags: [''],
+      active:[''],
       description: [''],
       level: this.formbuilder.group({
         id: ['']
@@ -76,20 +77,97 @@ export class EditComponent implements OnInit {
       )])
     });
   }
-
+i:number=0;
+//object:any=this.video.referenceArtifact;
  listVideoById(){
-  this.crudservice.listVideoById(this.id).subscribe( (result:any)=>
+  this.crudservice.listVideoById(this.id).subscribe(result=>
   {
     this.video=result;
     console.log(this.video);
+    console.log(this.video[0].name); //undefined
+    console.log(this.video[0].referenceUrl.length)
     this.videoForm.patchValue({
-      name : this.video.name,
-     // level: { id: this.video.level},
-      duration:this.video.duration
-    }
-    );
+      name :this.video[0].name,
+      displayName:this.video[0].displayName,
+      url:this.video[0].url,
+      duration:this.video[0].duration,
+      tags:this.video[0].tags,
+      active:this.video[0].status,
+      description:this.video[0].description,
+      level: { id: this.video[0].level.id},
+      category: { id: this.video[0].category.id},
+     
+  //     referenceArtifact:[
+  //        {
+  //          name:this.video[0].referenceArtifact[0].name,
+  //          description:this.video[0].referenceArtifact[0].description
+  //        }
+  //     ],
+  //     sampleProgram:[
+  //       {
+  //         name:this.video[0].sampleProgram[0].name,
+  //         description:this.video[0].sampleProgram[0].description
+  //       }
+  //    ],
+  //    referenceUrl:[
+  //     {
+  //       name:this.video[0].referenceUrl[0].name,
+  //       url:this.video[0].referenceUrl[0].url,
+  //       description:this.video[0].referenceUrl[0].description
+  //     }
+  //  ]
+    });
+    this.patchRefArt();
+    this.patchSamProg();
+    this.patchRefUrl();
   });
 }
+
+filestr:string="C://fakepath//";
+
+patchRefArt() {
+  let control = this.videoForm.get('referenceArtifact') as FormArray;
+  // Following is also correct
+  // let control = <FormArray>this.form.controls['resultList'];
+
+ this.video[0].referenceArtifact.forEach(x=>{
+      control.push(this.formbuilder.group({
+          name: x.name,
+          file:'',
+          description: x.description,
+
+      }));
+  });
+}
+
+patchSamProg() {
+  let control = this.videoForm.get('sampleProgram') as FormArray;
+  // Following is also correct
+  // let control = <FormArray>this.form.controls['resultList'];
+
+ this.video[0].sampleProgram.forEach(x=>{
+      control.push(this.formbuilder.group({
+          name: x.name,
+          file:'',     
+          description: x.description,
+      }));
+  });
+}
+
+  patchRefUrl() {
+    let control = this.videoForm.get('referenceUrl') as FormArray;
+    // Following is also correct
+    // let control = <FormArray>this.form.controls['resultList'];
+  
+   this.video[0].referenceUrl.forEach(x=>{
+        control.push(this.formbuilder.group({
+            name: x.name,
+            url: x.url,
+            description: x.description,
+  
+        }));
+    });
+  }
 
   get referenceArtifact() {
     return this.videoForm.get('referenceArtifact') as FormArray;
@@ -159,9 +237,9 @@ export class EditComponent implements OnInit {
   save() {
      
     //this.videoForm.patchValue(this.referenceArtifact[{file:}])
-    this.video = this.videoForm.value;
+    this.video=this.videoForm.value;
     console.log(this.video);
-    this.crudservice.addVideo(this.video).subscribe((result: any) => {
+    this.crudservice.editVideo(this.video).subscribe((result: any) => {
       this.categories = result;
       console.log(this.categories);
     });
