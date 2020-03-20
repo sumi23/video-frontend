@@ -58,19 +58,25 @@
         </div>
         <label class=" col-md-2 control-label">Transcript: </label>
         <div class="col-md-10">
-          <input type="file"  (change)=uploadFile($event) class="col-sm-6" formControlName="transcript">
+          <input type="file"  (change)=uploadFile($event) class="col-sm-6 form-control-file border" formControlName="transcript">
         </div>
         <label class=" col-md-2 control-label">Active: </label>
-        <!-- <div class="col-md-10">
-          <div class="form-check form-check-inline">
-            <input type="radio"  class="form-check-input col-sm-6" checked formControlName="active">
-            <label class="form-check-label">Yes</label>
+         <div class="col-md-10">
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="radio" value="true" [checked]="checkValue" formControlName="status">
+                    <label>Yes</label>
+                  </td>&nbsp;&nbsp;
+                  <td>
+                    <input type="radio" value="false" [checked]="checkValue" formControlName="status">
+                    <label>No</label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>    
           </div>&nbsp;&nbsp;&nbsp;
-          <div class="form-check form-check-inline">
-            <input type="radio"  class="form-check-input col-sm-6" formControlName="active">
-            <label class="form-check-label">No</label>
-          </div>  
-        </div> -->
         <!--end of video form-->
   
         <br /><br /><br /><br />
@@ -95,8 +101,12 @@
                   </div>
                   <label class=" col-md-2 control-label">Artifact:</label>
                   <div class="col-md-10">
-                    <input type="file" id="fileInput" (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
-                  </div>
+                    <input type="file" id="fileInput"  (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
+                    <br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    Existing file: <input style="border:none;font-size:smaller;" formControlName="filename" readonly />
+                  </div><br/><br/>
+                  
                   <label class=" col-md-2 control-label">Description:</label>
                   <div class="col-md-10">
                     <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
@@ -130,15 +140,19 @@
                   <label class=" col-md-2 control-label">Name:</label>
                   <div class="col-md-10">
                     <input type="text" class="col-sm-6" formControlName="name" />
-                  </div>
+                  </div><br/><br/>
                   <label class=" col-md-2 control-label">Artifact:</label>
                   <div class="col-md-10">
-                    <input type="file" value=showName() (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
-                  </div>
+                    <input type="file"  (change)=uploadFile($event) class="col-sm-6" formControlName="file" />
+                    <br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    Existing file: <input style="border:none;font-size:smaller;" formControlName="filename" readonly />
+                  </div><br/><br/>
                   <label class=" col-md-2 control-label">Description:</label>
                   <div class="col-md-10">
                     <textarea rows=3 cols=20 maxlength="250" formControlName="description"></textarea>
                   </div>
+                  <div id="textarea_feedback"></div>
                   <button class="btn btn-danger btn-sm" (click)="deleteSamProg(samProgindex)">Remove </button>
                 </div>
                 <br /> <br />
@@ -159,9 +173,10 @@
             </div>
           </div>
           <hr />
+          
           <div formArrayName="referenceUrl">
             <div *ngFor="let referenceUrl of videoForm.get('referenceUrl')['controls'];
-         let refUrlindex=index" [formGroupName]="refUrlindex">
+         let refUrlindex=index;" [formGroupName]="refUrlindex">
               <div class="form-group row">
                 <label class=" col-md-2 control-label">Name:</label>
                 <div class="col-md-10">
@@ -188,3 +203,4 @@
     </form>
     {{videoForm.value|json}}
   </div>
+  
