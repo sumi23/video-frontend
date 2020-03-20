@@ -32,13 +32,15 @@ export class EditComponent implements OnInit {
       this.id = params['id'];
       console.log(this.id);
     });
-    this.form();
+   
+    this.initializeForm();
     this.viewLevels();
     this.viewCategories();
     this.listVideoById();
+    
   }
 
-  form() {
+  initializeForm() {
     this.videoForm = this.formbuilder.group({
       name: [''],
       displayName: [''],
@@ -58,6 +60,7 @@ export class EditComponent implements OnInit {
         {
           name: [''],
           file: [''],
+          filename:[''],
           description: ['']
         }
       )]),
@@ -65,6 +68,7 @@ export class EditComponent implements OnInit {
         {
           name: [''],
           file: [''],
+          filename:[''],
           description: ['']
         }
       )]),
@@ -76,14 +80,18 @@ export class EditComponent implements OnInit {
         }
       )])
     });
+    //this.videoForm.get('status').setValue('true');
   }
 i:number=0;
+checkValue:boolean;
 //object:any=this.video.referenceArtifact;
  listVideoById(){
   this.crudservice.listVideoById(this.id).subscribe(result=>
   {
     this.video=result;
     console.log(this.video);
+    this.checkValue=this.video[0].status;
+    console.log(this.checkValue);
     console.log(this.video[0].name);
     this.videoForm.patchValue({
       name :this.video[0].name,
@@ -91,7 +99,7 @@ i:number=0;
       url:this.video[0].url,
       duration:this.video[0].duration,
       tags:this.video[0].tags,
-      status:this.video[0].status,
+     status:this.video[0].status,
       description:this.video[0].description,
       level: { id: this.video[0].level.id},
       category: { id: this.video[0].category.id},
@@ -119,6 +127,7 @@ patchRefArt() {
       control.push(this.formbuilder.group({
           name: x.name,
           file:'',
+          filename:x.file, 
           description: x.description,
 
       }));
@@ -129,10 +138,11 @@ patchSamProg() {
   this.deleteSamProg(0);
   let control = this.videoForm.get('sampleProgram') as FormArray;
  this.video[0].sampleProgram.forEach(x=>{
-    this.reffile=this.filestr.concat(x.file);
+    this.reffile=x.file;
       control.push(this.formbuilder.group({
           name: x.name,
-          file:'',     
+          file:'', 
+          filename:x.file,    
           description: x.description,
       }));
   });
@@ -231,13 +241,14 @@ patchSamProg() {
   }
 
   upvideo:Video;
+  refArtlen:number;
   save() {
      
     this.upvideo=this.videoForm.value;
     this.upvideo.id=this.video[0].id;
-    const refArtlen=this.video[0].referenceArtifact.length;
-    console.log("ref art length is:"+refArtlen);
-    for(let i=0;i< refArtlen;i++){
+   this.refArtlen=this.video[0].referenceArtifact.length;
+    console.log("ref art length is:"+this.refArtlen);
+    for(let i=0;i< this.refArtlen;i++){
       this.upvideo.referenceArtifact[i].id=this.video[0].referenceArtifact[i].id;
     } 
     const samProglen=this.video[0].sampleProgram.length;
