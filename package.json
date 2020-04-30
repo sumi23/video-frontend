@@ -22,7 +22,7 @@
     "@rxweb/reactive-form-validators": "^1.9.9-beta2",
     "bootstrap": "^4.4.1",
     "file-saver": "^2.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
